@@ -8,15 +8,18 @@ else
   echo "Initializing PostgreSQL cluster..."
   #ls -la /var/lib/postgresql/data
   /usr/local/bin/docker-entrypoint.sh postgres &
+fi
 echo "Cargando configuración inicial"
 sleep 10
-#echo "Termina configuración de postgresql"
-# 1. Crear la base de datos 'sie'
-psql -U postgres -c "CREATE USER $POSTGRES_USER  WITH LOGIN CREATEDB PASSWORD '$POSTGRES_USER_PASSWORD';"
-psql -U $POSTGRES_USER -d postgres -c "CREATE DATABASE $POSTGRES_DATABASE;"
-echo "Se creo la base de datos sie"
-# 2. Hacer el backup en sie mediante users
-pg_dump -U usertosie -d postgres -Fc sieusers > /usr/local/bin/sie_backup.sql
+echo "Termina configuración de postgresql"
+# 1. Crea al nuevo usuario
+echo "Creando nuevo usuario"
+psql -U postgres -c "CREATE USER $SIE_POSTGRES_USER  WITH LOGIN CREATEDB PASSWORD '$SIE_POSTGRES_USER_PASSWORD';"
+# 2. Crea la base de datos
+echo "Creando nueva base de datos"
+psql -U $SIE_POSTGRES_USER -d postgres -c "CREATE DATABASE $SIE_POSTGRES_DATABASE;"
+# 3. Hacer el backup la nueva db
+echo "Realizando el backup"
+psql -U $SIE_POSTGRES_USER -d $SIE_POSTGRES_DATABASE < /usr/local/bin/sie_backup.sql
 echo "Finaliza Configuración"
-fi
 wait

@@ -1,9 +1,10 @@
-FROM arm64v8/postgres:15
+FROM arm64v8/postgres:16
 
 # Eliminar el contenido del directorio de datos antes de iniciar
 RUN rm -rf /var/lib/postgresql/data/*
 # Copiar archivo de backup
 COPY sie_backup.sql /usr/local/bin/
+RUN chmod +x /usr/local/bin/sie_backup.sql
 #Copiar script bash
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
