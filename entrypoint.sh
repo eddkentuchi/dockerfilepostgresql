@@ -5,7 +5,9 @@ sleep 2
 # Ejecutar el script de inicialización original de PostgreSQL
 if [ -s "$PGDATA/PG_VERSION" ]; then
   echo "PostgreSQL cluster already exists. Skipping initialization."
-  rm -r /docker-entrypoint-initdb.d
+  if [ -d "/docker-entrypoint-initdb.d" ]; then  
+    rm -r /docker-entrypoint-initdb.d
+  fi
   /usr/local/bin/docker-entrypoint.sh postgres 
 else
   echo "Initializing PostgreSQL cluster..."
