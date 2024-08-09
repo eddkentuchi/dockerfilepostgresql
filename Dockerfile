@@ -3,11 +3,9 @@ FROM arm64v8/postgres:15
 # Eliminar el contenido del directorio de datos antes de iniciar
 RUN rm -rf /var/lib/postgresql/data/*
 # Copiar archivo de backup
-#COPY sie_backup.sql /docker-entrypoint-initdb.d/
+#COPY sie_backup.sql /usr/local/bin/
 # Copiar el script de creación de base de datos
-COPY init.sql /docker-entrypoint-initdb.d/
-#Copiar el cambio de nombre de la base de datos
-COPY zfinish.sql /docker-entrypoint-initdb.d/
+#COPY init.sql /docker-entrypoint-initdb.d/
 #Copiar script bash
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
